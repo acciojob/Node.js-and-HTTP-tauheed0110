@@ -2,23 +2,15 @@ const http = require('http');
 
 const server = http.createServer((req, res) => {
   // TODO: Implement this function
-  let details= {
-    method: req.method,
+  const details = {
+    header: req.header,
     url: req.url,
-    headers: req.headers
+    method: req.method
   }
-  if(req.method === 'GET'){
-    res.end(JSON.stringify(details));
-  }
-  if(req.method==='POST'){
-    let body = '';
-    req.on('data', (chunk) => {
-      body += chunk;
-    })
-    details.body = body ? JSON.parse(body) : {};
-    req.on('end', ()=>{
-      res.end(JSON.stringify(details));
-    })
+  if(req.method === 'GET' || req.method === 'POST'){
+    res.end(JSON.stringify({message: "Request recieved", requestDetails: details}));
+  }else{
+    res.end(JSON.stringify({message: "Method not found"}))
   }
 });
 
